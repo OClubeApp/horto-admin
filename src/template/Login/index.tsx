@@ -28,7 +28,7 @@ const Login = () => {
             {contextHolder}
             <S.Container>
                 <S.LeftSide>
-                    <S.Banner src="assets/images/bannerClubeDoHorto.png" />
+                    <S.Banner src="assets/images/DESTAQUESCLUBEDOHORTO02.png" />
                 </S.LeftSide>
                 <S.RightSide>
                     <Form
