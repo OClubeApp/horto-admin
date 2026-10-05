@@ -6,6 +6,7 @@ import { ICompanyRequest } from 'interfaces/Companies';
 import ImagePicker from 'components/ImagePiker';
 import StateSelect from 'components/StateSelect';
 import { getApiErrorMessage } from 'utils/apiError';
+import CepInput from 'components/CepInput';
 import * as S from './styles';
 
 const { Text } = Typography;
@@ -187,6 +188,23 @@ const EditCompanyPage = () => {
                             </Typography.Title>
 
                             <Form.Item
+                                label="CEP"
+                                name={['address', 'cep']}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Por favor, insira o CEP'
+                                    },
+                                    {
+                                        pattern: /^\d{5}-\d{3}$/,
+                                        message:
+                                            'CEP deve estar no formato 00000-000'
+                                    }
+                                ]}
+                            >
+                                <CepInput />
+                            </Form.Item>
+                            <Form.Item
                                 label="Rua"
                                 name={['address', 'street']}
                                 rules={[
@@ -249,24 +267,6 @@ const EditCompanyPage = () => {
                                 ]}
                             >
                                 <StateSelect />
-                            </Form.Item>
-
-                            <Form.Item
-                                label="CEP"
-                                name={['address', 'cep']}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Por favor, insira o CEP'
-                                    },
-                                    {
-                                        pattern: /^\d{5}-\d{3}$/,
-                                        message:
-                                            'CEP deve estar no formato 00000-000'
-                                    }
-                                ]}
-                            >
-                                <Input placeholder="00000-000" maxLength={9} />
                             </Form.Item>
                         </S.FormSection>
                     </Flex>

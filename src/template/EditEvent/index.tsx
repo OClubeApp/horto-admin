@@ -14,6 +14,7 @@ import EventService from 'services/EventService';
 import { IEventRequest } from 'interfaces/Events';
 import moment from 'moment';
 import ImagePicker from 'components/ImagePiker';
+import CepInput from 'components/CepInput';
 import * as S from './styles';
 
 const { TextArea } = Input;
@@ -252,6 +253,17 @@ const EditEventPage = () => {
                                     Endereço
                                 </Typography.Title>
                                 <Form.Item
+                                    name={['address', 'cep']}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Por favor, insira o CEP'
+                                        }
+                                    ]}
+                                >
+                                    <CepInput />
+                                </Form.Item>
+                                <Form.Item
                                     name={['address', 'street']}
                                     rules={[
                                         {
@@ -317,17 +329,6 @@ const EditEventPage = () => {
                                     ]}
                                 >
                                     <Input placeholder="Estado" />
-                                </Form.Item>
-                                <Form.Item
-                                    name={['address', 'cep']}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Por favor, insira o CEP'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="CEP" />
                                 </Form.Item>
                             </>
                         )}
