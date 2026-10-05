@@ -2,16 +2,19 @@ import axios from 'axios';
 import { parseCookies } from 'nookies';
 
 export function getApi() {
-    const { '@app:token': token } = parseCookies();
-
     const api = axios.create({
         baseURL: 'https://clube-do-horto.polijrinternal.com'
     });
 
-    if (token) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (api.defaults.headers as any).Authorization = `Bearer ${token}`;
-    }
+    // Lê o token a cada requisição: no import o cookie ainda pode não existir (antes do login)
+    api.interceptors.request.use((config) => {
+        const { '@app:token': token } = parseCookies();
+        if (!token) return config;
+        return {
+            ...config,
+            headers: { ...config.headers, Authorization: `Bearer ${token}` }
+        };
+    });
 
     return api;
 }

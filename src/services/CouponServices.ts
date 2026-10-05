@@ -27,7 +27,8 @@ export default class CouponServices {
                 reward: data.reward,
                 payment: data.payment,
                 rules: data.rules,
-                active: data.active
+                active: data.active,
+                acceptedPlanIds: data.acceptedPlanIds
             }
         );
         return response.data;

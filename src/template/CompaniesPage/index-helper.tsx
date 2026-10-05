@@ -32,8 +32,8 @@ export const getColumns = (
     },
     {
         title: 'Plano',
-        dataIndex: 'subscriptionPlan',
-        key: 'subscriptionPlan',
+        dataIndex: ['plan', 'name'],
+        key: 'plan',
         render: (text: string) => <span>{text || 'Sem plano ativo'}</span>
     },
     {
@@ -46,10 +46,9 @@ export const getColumns = (
         title: 'Validade do Plano',
         dataIndex: 'planExpirationDate',
         key: 'planExpirationDate',
-        render: (text: string) => {
-            const formattedDate = customFormatDateTime(text);
-            return <span>{formattedDate}</span>;
-        }
+        render: (text: string | null) => (
+            <span>{customFormatDateTime(text)}</span>
+        )
     },
     {
         title: 'Ação',

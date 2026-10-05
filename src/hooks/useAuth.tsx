@@ -1,8 +1,6 @@
 import { destroyCookie, setCookie, parseCookies } from 'nookies';
 import React, { useState, useContext, createContext, useEffect } from 'react';
 
-import api from 'services/api';
-
 import UserService from 'services/UserService';
 
 import { AuthResponse, Administrator } from 'interfaces/Auth';
@@ -20,6 +18,9 @@ interface AuthContextData {
     login: (data: ILoginRequest) => void;
     logout: () => void;
 }
+
+// path '/' para o cookie valer em todas as rotas, não só em /Login
+const COOKIE_OPTIONS = { path: '/' };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -44,22 +45,34 @@ export const AuthProvider: React.FC = ({ children }) => {
         try {
             const response: AuthResponse = await UserService.login(data);
 
-            setCookie(undefined, '@app:token', response.token);
-            api.defaults.headers.common = {
-                Authorization: `Bearer ${response.token}`
-            };
+            setCookie(undefined, '@app:token', response.token, COOKIE_OPTIONS);
 
             if (response.administrator) {
                 setUser(response.administrator);
-                setCookie(undefined, '@app:userId', response.administrator.id);
-                setCookie(undefined, '@app:userType', 'adm');
+                setCookie(
+                    undefined,
+                    '@app:userId',
+                    response.administrator.id,
+                    COOKIE_OPTIONS
+                );
+                setCookie(undefined, '@app:userType', 'adm', COOKIE_OPTIONS);
                 setUserType('adm');
                 setUserId(response.administrator.id);
             }
             if (response.company) {
                 setUser(response.company);
-                setCookie(undefined, '@app:userId', response.company.id);
-                setCookie(undefined, '@app:userType', 'company');
+                setCookie(
+                    undefined,
+                    '@app:userId',
+                    response.company.id,
+                    COOKIE_OPTIONS
+                );
+                setCookie(
+                    undefined,
+                    '@app:userType',
+                    'company',
+                    COOKIE_OPTIONS
+                );
                 setUserType('company');
                 setUserId(response.company.id);
             }
@@ -70,9 +83,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     };
 
     const logout = () => {
-        destroyCookie(undefined, '@app:token');
-        destroyCookie(undefined, '@app:userId');
-        destroyCookie(undefined, '@app:userType');
+        destroyCookie(undefined, '@app:token', COOKIE_OPTIONS);
+        destroyCookie(undefined, '@app:userId', COOKIE_OPTIONS);
+        destroyCookie(undefined, '@app:userType', COOKIE_OPTIONS);
         setUser(null);
         setUserType(null);
         setUserId(null);

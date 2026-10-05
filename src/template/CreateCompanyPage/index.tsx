@@ -61,7 +61,6 @@ const CreateCompanyPage = () => {
                     layout="vertical"
                     onFinish={onFinish}
                     initialValues={{
-                        subscriptionPlan: 'basic',
                         address: {
                             state: 'SP'
                         }
@@ -139,7 +138,7 @@ const CreateCompanyPage = () => {
                             </Form.Item>
                         </S.FormSection>
 
-                        {/* Coluna 2 - Plano e Endereço */}
+                        {/* Coluna 2 - Endereço */}
                         <S.FormSection>
                             <Typography.Title level={4}>
                                 Endereço
