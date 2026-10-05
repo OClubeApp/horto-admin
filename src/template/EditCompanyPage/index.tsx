@@ -5,19 +5,15 @@ import {
     Button,
     Typography,
     Flex,
-    DatePicker,
-    Select,
     message
 } from 'antd';
 import { useRouter } from 'next/router';
-import dayjs from 'dayjs';
 import CompanyService from 'services/CompanyService';
 import { ICompanyRequest } from 'interfaces/Companies';
 import ImagePicker from 'components/ImagePiker';
 import StateSelect from 'components/StateSelect';
 import * as S from './styles';
 
-const { Option } = Select;
 const { Text } = Typography;
 
 const EditCompanyPage = () => {
@@ -43,10 +39,6 @@ const EditCompanyPage = () => {
                             name: company.name,
                             email: company.email,
                             branch: company.branch,
-                            subscriptionPlan: company.plan?.name || null,
-                            planExpirationDate: dayjs(
-                                company.planExpirationDate
-                            ),
                             address: {
                                 street: company.address.street,
                                 numberHouse: company.address.numberHouse,
@@ -189,50 +181,11 @@ const EditCompanyPage = () => {
                             </Form.Item>
                         </S.FormSection>
 
-                        {/* Coluna 2 - Plano e Endereço */}
+                        {/* Coluna 2 - Endereço */}
                         <S.FormSection>
                             <Typography.Title level={4}>
-                                Plano e Endereço
+                                Endereço
                             </Typography.Title>
-
-                            <Form.Item
-                                label="Plano de Assinatura"
-                                name="subscriptionPlan"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Por favor, selecione um plano'
-                                    }
-                                ]}
-                            >
-                                <Select>
-                                    <Option value="basic">Básico</Option>
-                                    <Option value="premium">Premium</Option>
-                                    <Option value="enterprise">
-                                        Enterprise
-                                    </Option>
-                                </Select>
-                            </Form.Item>
-
-                            <Form.Item
-                                label="Validade do Plano"
-                                name="planExpirationDate"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message:
-                                            'Por favor, selecione a data de expiração'
-                                    }
-                                ]}
-                            >
-                                <DatePicker
-                                    style={{ width: '100%' }}
-                                    disabledDate={(current) =>
-                                        current &&
-                                        current < dayjs().endOf('day')
-                                    }
-                                />
-                            </Form.Item>
 
                             <Form.Item
                                 label="Rua"

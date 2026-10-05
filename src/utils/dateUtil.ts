@@ -1,27 +1,14 @@
-function padToTwoDigits(number: number): string {
-    return number.toString().padStart(2, '0');
+import dayjs from 'dayjs';
+
+function format(value: string | Date | null | undefined, pattern: string) {
+    const date = dayjs(value ?? null);
+    return date.isValid() ? date.format(pattern) : '-';
 }
 
-export function customFormatDate(dateString: string): string {
-    const date = new Date(dateString);
-
-    const day = padToTwoDigits(date.getDate());
-    const month = padToTwoDigits(date.getMonth() + 1); // Os meses são baseados em zero
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
+export function customFormatDate(value: string | Date | null | undefined) {
+    return format(value, 'DD/MM/YYYY');
 }
 
-export function customFormatDateTime(dateTimeString: string): string {
-    const date = new Date(dateTimeString);
-
-    const day = padToTwoDigits(date.getDate());
-    const month = padToTwoDigits(date.getMonth() + 1); // Os meses são baseados em zero
-    const year = date.getFullYear();
-
-    const hours = padToTwoDigits(date.getHours());
-    const minutes = padToTwoDigits(date.getMinutes());
-    const seconds = padToTwoDigits(date.getSeconds());
-
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+export function customFormatDateTime(value: string | Date | null | undefined) {
+    return format(value, 'DD/MM/YYYY HH:mm:ss');
 }
