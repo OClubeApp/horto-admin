@@ -24,7 +24,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true
+    "incremental": true,
+    "types": ["node", "jest", "testing-library__jest-dom"]
   },
   "exclude": [
     "node_modules"
