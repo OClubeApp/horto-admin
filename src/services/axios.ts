@@ -9,13 +9,11 @@ export function getApi() {
     // Lê o token a cada requisição: no import o cookie ainda pode não existir (antes do login)
     api.interceptors.request.use((config) => {
         const { '@app:token': token } = parseCookies();
-        if (token) {
-            config.headers = {
-                ...config.headers,
-                Authorization: `Bearer ${token}`
-            };
-        }
-        return config;
+        if (!token) return config;
+        return {
+            ...config,
+            headers: { ...config.headers, Authorization: `Bearer ${token}` }
+        };
     });
 
     return api;

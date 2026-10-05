@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Form,
-    Input,
-    Button,
-    Typography,
-    Flex,
-    message
-} from 'antd';
+import { Form, Input, Button, Typography, Flex, message } from 'antd';
 import { useRouter } from 'next/router';
 import CompanyService from 'services/CompanyService';
 import { ICompanyRequest } from 'interfaces/Companies';

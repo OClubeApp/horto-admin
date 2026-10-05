@@ -49,15 +49,30 @@ export const AuthProvider: React.FC = ({ children }) => {
 
             if (response.administrator) {
                 setUser(response.administrator);
-                setCookie(undefined, '@app:userId', response.administrator.id, COOKIE_OPTIONS);
+                setCookie(
+                    undefined,
+                    '@app:userId',
+                    response.administrator.id,
+                    COOKIE_OPTIONS
+                );
                 setCookie(undefined, '@app:userType', 'adm', COOKIE_OPTIONS);
                 setUserType('adm');
                 setUserId(response.administrator.id);
             }
             if (response.company) {
                 setUser(response.company);
-                setCookie(undefined, '@app:userId', response.company.id, COOKIE_OPTIONS);
-                setCookie(undefined, '@app:userType', 'company', COOKIE_OPTIONS);
+                setCookie(
+                    undefined,
+                    '@app:userId',
+                    response.company.id,
+                    COOKIE_OPTIONS
+                );
+                setCookie(
+                    undefined,
+                    '@app:userType',
+                    'company',
+                    COOKIE_OPTIONS
+                );
                 setUserType('company');
                 setUserId(response.company.id);
             }
