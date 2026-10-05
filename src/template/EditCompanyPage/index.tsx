@@ -5,6 +5,7 @@ import CompanyService from 'services/CompanyService';
 import { ICompanyRequest } from 'interfaces/Companies';
 import ImagePicker from 'components/ImagePiker';
 import StateSelect from 'components/StateSelect';
+import { getApiErrorMessage } from 'utils/apiError';
 import * as S from './styles';
 
 const { Text } = Typography;
@@ -89,7 +90,12 @@ const EditCompanyPage = () => {
             router.push('/Companies');
         } catch (error) {
             console.error('Erro ao atualizar empresa:', error);
-            message.error('Ocorreu um erro ao atualizar a empresa');
+            message.error(
+                getApiErrorMessage(
+                    error,
+                    'Ocorreu um erro ao atualizar a empresa'
+                )
+            );
         } finally {
             setLoading(false);
         }

@@ -5,6 +5,7 @@ import CompanyService from 'services/CompanyService';
 import { ICompanyRequest } from 'interfaces/Companies';
 import ImagePicker from 'components/ImagePiker';
 import StateSelect from 'components/StateSelect';
+import { getApiErrorMessage } from 'utils/apiError';
 import * as S from './styles';
 
 const { Text } = Typography;
@@ -39,7 +40,9 @@ const CreateCompanyPage = () => {
             router.push('/Companies');
         } catch (error) {
             console.error('Erro ao criar empresa:', error);
-            message.error('Ocorreu um erro ao criar a empresa');
+            message.error(
+                getApiErrorMessage(error, 'Ocorreu um erro ao criar a empresa')
+            );
         } finally {
             setLoading(false);
         }
@@ -108,6 +111,18 @@ const CreateCompanyPage = () => {
                                     {
                                         required: true,
                                         message: 'Por favor, insira uma senha'
+                                    },
+                                    // Mesmas regras do backend (createCompaniesSchema)
+                                    {
+                                        min: 8,
+                                        message:
+                                            'A senha deve ter pelo menos 8 caracteres'
+                                    },
+                                    {
+                                        pattern:
+                                            /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])/,
+                                        message:
+                                            'A senha deve ter letra maiúscula, minúscula, número e caractere especial (@$!%*?&#)'
                                     }
                                 ]}
                             >
