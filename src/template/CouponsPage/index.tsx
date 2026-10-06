@@ -9,6 +9,7 @@ import CouponModal from 'components/Modals/CouponModal';
 import CouponServices from 'services/CouponServices';
 import CompanyService from 'services/CompanyService';
 import useAuth from 'hooks/useAuth';
+import { customFormatDate } from 'utils/dateUtil';
 import * as S from './styles';
 
 const CouponsPage = () => {
@@ -20,6 +21,8 @@ const CouponsPage = () => {
 
     const { companyId } = router.query;
     const { userType } = useAuth();
+    // Empresas só visualizam os próprios cupons; criação/edição é do administrador
+    const isCompany = userType === 'company';
 
     useEffect(() => {
         if (companyId) {
@@ -43,11 +46,6 @@ const CouponsPage = () => {
 
     const navigateToCouponCreate = (couponId?: string) => {
         const query: { companyId?: string; couponId?: string } = {};
-
-        if (userType === 'company') {
-            window.location.href = 'https://polijunior.com.br/';
-            return;
-        }
 
         if (company) {
             query.companyId = company.id;
@@ -96,15 +94,23 @@ const CouponsPage = () => {
     return (
         <S.PageContainer>
             <S.HeaderContainer>
-                <h2>Cupons ativos: {company.name}</h2>
-                <S.PlusIconWrapper>
-                    <PlusOutlined onClick={() => navigateToCouponCreate()} />
-                </S.PlusIconWrapper>
+                <h2>
+                    {isCompany
+                        ? 'Visualização de cupons'
+                        : `Cupons ativos: ${company.name}`}
+                </h2>
+                {!isCompany && (
+                    <S.PlusIconWrapper>
+                        <PlusOutlined
+                            onClick={() => navigateToCouponCreate()}
+                        />
+                    </S.PlusIconWrapper>
+                )}
             </S.HeaderContainer>
             {company.plan?.name ? (
                 <h3>
                     Plano Atual: {company.plan.name} - Vencimento em:{' '}
-                    {company.planExpirationDate}
+                    {customFormatDate(company.planExpirationDate)}
                 </h3>
             ) : (
                 <h3>Nenhum plano ativo.</h3>

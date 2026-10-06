@@ -9,6 +9,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 import { IPlan } from 'interfaces/Plans';
+import useAuth from 'hooks/useAuth';
 import * as S from './styles';
 
 dayjs.extend(localizedFormat);
@@ -25,6 +26,13 @@ const CreateCoupon = () => {
     const [plans, setPlans] = useState<IPlan[]>([]);
 
     const { companyId, couponId } = router.query;
+    // Empresas só visualizam o cupom; criação/edição é do administrador
+    const isCompany = useAuth().userType === 'company';
+
+    const getTitle = () => {
+        if (isCompany) return 'Visualização de Cupom';
+        return couponId ? 'Editar Cupom' : 'Criar Cupom';
+    };
 
     // Buscar planos
     useEffect(() => {
@@ -106,12 +114,13 @@ const CreateCoupon = () => {
 
     return (
         <S.PageContainer>
-            <h1>{couponId ? 'Editar Cupom' : 'Criar Cupom'}</h1>
+            <h1>{getTitle()}</h1>
             <Form
                 form={form}
                 layout="vertical"
                 onFinish={handleSubmit}
                 initialValues={initialValues || undefined}
+                disabled={isCompany}
             >
                 <Form.Item
                     label="Nome"
@@ -234,11 +243,17 @@ const CreateCoupon = () => {
                     />
                 </Form.Item>
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={loading}>
-                        {couponId ? 'Atualizar Cupom' : 'Criar Cupom'}
-                    </Button>
-                </Form.Item>
+                {!isCompany && (
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={loading}
+                        >
+                            {couponId ? 'Atualizar Cupom' : 'Criar Cupom'}
+                        </Button>
+                    </Form.Item>
+                )}
             </Form>
         </S.PageContainer>
     );
