@@ -87,6 +87,19 @@ export default class CompanyService {
         return response.data;
     }
 
+    // Apenas administradores. planId null remove o plano da empresa
+    static async UpdateCompanyPlan(
+        companyId: string,
+        planId: string | null,
+        planExpirationDate: string | null
+    ): Promise<Company> {
+        const response: AxiosResponse<Company> = await api.patch(
+            `/companies/updatePlan/${companyId}`,
+            { planId, planExpirationDate }
+        );
+        return response.data;
+    }
+
     static async deleteCompany(id: string) {
         const response = await api.delete(`/companies/delete/${id}`);
         return response.data;

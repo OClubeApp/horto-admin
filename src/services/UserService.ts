@@ -33,4 +33,17 @@ export default class UserService {
 
         return response.data;
     }
+
+    // Apenas administradores. planId null remove o plano do usuário
+    static async UpdateUserPlan(
+        userId: string,
+        planId: string | null,
+        planExpirationDate: string | null
+    ): Promise<User> {
+        const response: AxiosResponse<User> = await api.patch(
+            `/users/updatePlan/${userId}`,
+            { planId, planExpirationDate }
+        );
+        return response.data;
+    }
 }

@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Typography, Flex, message } from 'antd';
 import { useRouter } from 'next/router';
 import CompanyService from 'services/CompanyService';
+import useAuth from 'hooks/useAuth';
 import { ICompanyRequest } from 'interfaces/Companies';
+import PlanFields, {
+    PlanFieldsValues,
+    toPlanFieldsValues,
+    toPlanExpirationIso
+} from 'components/PlanFields';
 import ImagePicker from 'components/ImagePiker';
 import StateSelect from 'components/StateSelect';
 import { getApiErrorMessage } from 'utils/apiError';
@@ -11,6 +17,8 @@ import * as S from './styles';
 
 const { Text } = Typography;
 
+type EditCompanyFormValues = ICompanyRequest & PlanFieldsValues;
+
 const EditCompanyPage = () => {
     const [form] = Form.useForm();
     const router = useRouter();
@@ -18,6 +26,8 @@ const EditCompanyPage = () => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [initialImage, setInitialImage] = useState<string | null>(null);
+    const { userType } = useAuth();
+    const isAdmin = userType === 'adm';
 
     useEffect(() => {
         const fetchCompanyData = async () => {
@@ -41,7 +51,8 @@ const EditCompanyPage = () => {
                                 city: company.address.city,
                                 state: company.address.state,
                                 cep: company.address.cep
-                            }
+                            },
+                            ...toPlanFieldsValues(company)
                         });
                     }
 
@@ -62,7 +73,7 @@ const EditCompanyPage = () => {
         fetchCompanyData();
     }, [companyId, form, router]);
 
-    const onFinish = async (values: ICompanyRequest) => {
+    const onFinish = async (values: EditCompanyFormValues) => {
         setLoading(true);
         try {
             const companyData: ICompanyRequest = {
@@ -87,6 +98,14 @@ const EditCompanyPage = () => {
                 companyId as string,
                 companyData
             );
+
+            if (isAdmin) {
+                await CompanyService.UpdateCompanyPlan(
+                    companyId as string,
+                    values.planId ?? null,
+                    toPlanExpirationIso(values)
+                );
+            }
             message.success('Empresa atualizada com sucesso!');
             router.push('/Companies');
         } catch (error) {
@@ -270,6 +289,13 @@ const EditCompanyPage = () => {
                             </Form.Item>
                         </S.FormSection>
                     </Flex>
+
+                    {isAdmin && (
+                        <S.PlanSection>
+                            <Typography.Title level={4}>Plano</Typography.Title>
+                            <PlanFields scope="enterprise" />
+                        </S.PlanSection>
+                    )}
 
                     <Form.Item style={{ marginTop: 24 }}>
                         <Button

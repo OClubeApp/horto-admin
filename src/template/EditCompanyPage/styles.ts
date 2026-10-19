@@ -26,6 +26,12 @@ export const FormSection = styled.div`
     }
 `;
 
+export const PlanSection = styled.div`
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #cacaca;
+`;
+
 export const ImageUploadContainer = styled.div`
     display: flex;
     flex-direction: column;

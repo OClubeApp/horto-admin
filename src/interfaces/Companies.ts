@@ -9,7 +9,7 @@ export interface Company {
     password: string;
     image: string;
     branch: string;
-    planExpirationDate: string;
+    planExpirationDate: string | null;
     planId: string | null;
     address: IAddress;
     coupons: ICoupon[];
