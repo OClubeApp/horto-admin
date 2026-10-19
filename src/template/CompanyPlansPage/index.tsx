@@ -7,6 +7,7 @@ import PlanService from 'services/PlansService';
 import { IPlan, ISubscribeRequest } from 'interfaces/Plans';
 import CompanyPlanCard from 'components/CompanyPlansCards';
 import { Company } from 'interfaces/Companies';
+import { customFormatDate } from 'utils/dateUtil';
 import * as S from './styles';
 
 const PlansPage: React.FC = () => {
@@ -141,9 +142,7 @@ const PlansPage: React.FC = () => {
                     </p>
                     <p>
                         <strong>Expira em:</strong>{' '}
-                        {new Date(
-                            company.planExpirationDate
-                        ).toLocaleDateString()}
+                        {customFormatDate(company.planExpirationDate)}
                     </p>
                 </div>
                 <button
